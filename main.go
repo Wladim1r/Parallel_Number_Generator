@@ -10,7 +10,6 @@ import (
 )
 
 func Generator(ctx context.Context, ch chan<- int64, fn func(int64)) {
-	// 1. Функция Generator
 	var num int64
 	for {
 		num++
@@ -25,7 +24,6 @@ func Generator(ctx context.Context, ch chan<- int64, fn func(int64)) {
 }
 
 func Worker(in <-chan int64, out chan<- int64) {
-	// 2. Функция Worker
 	for v := range in {
 		out <- v
 	}
@@ -35,7 +33,6 @@ func Worker(in <-chan int64, out chan<- int64) {
 func main() {
 	chIn := make(chan int64)
 
-	// 3. Создание контекста
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 
@@ -65,7 +62,7 @@ func main() {
 
 	var wg sync.WaitGroup
 
-	// 4. Собираем числа из каналов outs
+	// Собираем числа из каналов outs
 	for i, ch := range outs {
 		wg.Add(1)
 		go func(in <-chan int64, i int64) {
@@ -88,7 +85,7 @@ func main() {
 	var count int64 // количество чисел результирующего канала
 	var sum int64   // сумма чисел результирующего канала
 
-	// 5. Читаем числа из результирующего канала
+	// Читаем числа из результирующего канала
 	for v := range chOut {
 		count++
 		sum += v
